@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <!-- Need to include jQuery! -->
+        <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+        <!-- Need to include the jquery.playSounds.js. Just to make playing sounds easier. -->
+        <!-- <script src="jquery.playSound.js" type="text/javascript"></script> -->
+        <script>
+            var audioPlayer = null;
+            // Listen for NUI Messages.
+            window.addEventListener('message', function(event) {
+                // Check for playSound transaction
+                if (event.data.transactionType == "playSound") {
+
+                  $.post('http://life_interactsounds/consoleLog', JSON.stringify({
+                      consoleMessage: "Sound playing... " + event.data.transactionFile
+                  }));
+
+                  if (audioPlayer != null) {
+                    audioPlayer.pause();
+                  }
+
+                  audioPlayer = new Audio("./sounds/" + event.data.transactionFile + ".ogg");
+                  audioPlayer.volume = 1.0;
+                  audioPlayer.play();
+
+                }
+            });
+        </script>
+    </head>
+</html>
