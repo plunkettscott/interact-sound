@@ -1,6 +1,6 @@
 
 ------
--- Interact Sounds by Scott
+-- InteractSound by Scott
 -- Verstion: v0.0.1
 ------
 
@@ -20,7 +20,6 @@ ui_page('client/html/index.html')
 -- DON'T FORGET TO ADD THE SOUND FILES TO THIS!
 files({
     'client/html/index.html',
-    'client/html/jquery.playSound.js',
     -- Begin Sound Files Here...
     -- client/html/sounds/ ... .ogg
     'client/html/sounds/demo.ogg'

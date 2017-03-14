@@ -1,10 +1,6 @@
 
-RegisterNUICallback('consoleLog', function(data)
-    Citizen.Trace("InteractSounds Debug: " .. data.consoleMessage .. "\r\n")
-end)
-
 ------
--- Interaction Sounds by Scott
+-- InteractionSound by Scott
 -- Version: v0.0.1
 -- Path: client/main.lua
 --
