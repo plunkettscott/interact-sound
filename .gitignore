@@ -1,0 +1,6 @@
+.vscode/
+node_modules/
+dist/client.js
+dist/server.js
+dist/app/app.js
+docs/.vuepress/dist

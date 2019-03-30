@@ -1,3 +1,3 @@
 # Interact Sound
 
-Play sounds using the NUI environment in FiveM's FXServer.
+> Version 2.0.0-alapha.1
