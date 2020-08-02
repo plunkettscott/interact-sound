@@ -83,5 +83,9 @@ end)
 ------
 RegisterServerEvent('InteractSound_SV:PlayWithinDistance')
 AddEventHandler('InteractSound_SV:PlayWithinDistance', function(maxDistance, soundFile, soundVolume)
+  if GetConvar("onesync_enableInfinity", "false") == "true" then
+    TriggerClientEvent('InteractSound_CL:PlayWithinDistanceOS', -1, GetEntityCoords(GetPlayerPed(source)), maxDistance, soundFile, soundVolume)
+  else
     TriggerClientEvent('InteractSound_CL:PlayWithinDistance', -1, source, maxDistance, soundFile, soundVolume)
+  end
 end)
