@@ -89,3 +89,8 @@ AddEventHandler('InteractSound_SV:PlayWithinDistance', function(maxDistance, sou
     TriggerClientEvent('InteractSound_CL:PlayWithinDistance', -1, source, maxDistance, soundFile, soundVolume)
   end
 end)
+
+RegisterServerEvent('InteractSound_SV:PlayForJob')
+AddEventHandler('InteractSound_SV:PlayForJob', function(soundFile, soundVolume, job)
+    TriggerClientEvent('InteractSound_CL:PlayForJob', -1, soundFile, soundVolume, job)
+end)
