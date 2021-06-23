@@ -89,3 +89,13 @@ AddEventHandler('InteractSound_SV:PlayWithinDistance', function(maxDistance, sou
     TriggerClientEvent('InteractSound_CL:PlayWithinDistance', -1, source, maxDistance, soundFile, soundVolume)
   end
 end)
+
+RegisterNetEvent('InteractSound_SV:PlayWithinDistance')
+AddEventHandler('InteractSound_SV:PlayWithinDistance', function(maxDistance, soundFile, soundVolume)
+	local src = source
+    if maxDistance < 300 then
+	    TriggerClientEvent('InteractSound_CL:PlayWithinDistance', -1, GetEntityCoords(GetPlayerPed(src)), maxDistance, soundFile, soundVolume)
+    else
+        DropPlayer(src, 'Cheating!')
+    end
+end)
