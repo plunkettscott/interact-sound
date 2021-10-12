@@ -9,15 +9,21 @@
             window.addEventListener('message', function(event) {
                 // Check for playSound transaction
                 if (event.data.transactionType == "playSound") {
-				
+
                   if (audioPlayer != null) {
                     audioPlayer.pause();
                   }
-
                   audioPlayer = new Howl({src: ["./sounds/" + event.data.transactionFile + ".ogg"]});
                   audioPlayer.volume(event.data.transactionVolume);
                   audioPlayer.play();
-
+                }
+				
+				        if (event.data.transactionType == "volume") {
+                  audioPlayer.volume(event.data.volNUI);
+                }	
+				
+				        if (event.data.transactionType == "stop") {
+                  audioPlayer.pause();
                 }
             });
         </script>
