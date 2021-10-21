@@ -8,12 +8,20 @@
 -- a specific range from the entity to which the sound has been created.
 ------
 
+local pos
+local songCoords
+local volumeSend
+local maxDist
+local distance
+local stop = true
+
 local standardVolumeOutput = 0.3;
 local hasPlayerLoaded = false
 Citizen.CreateThread(function()
 	Wait(15000)
 	hasPlayerLoaded = true
 end)
+
 ------
 -- RegisterNetEvent LIFE_CL:Sound:PlayOnOne
 --
@@ -77,16 +85,102 @@ end)
 RegisterNetEvent('InteractSound_CL:PlayWithinDistance')
 AddEventHandler('InteractSound_CL:PlayWithinDistance', function(otherPlayerCoords, maxDistance, soundFile, soundVolume)
 	if hasPlayerLoaded then
-		local myCoords = GetEntityCoords(PlayerPedId())
-		local distance = #(myCoords - otherPlayerCoords)
-
-		if distance < maxDistance then
-			SendNUIMessage({
-				transactionType = 'playSound',
-				transactionFile  = soundFile,
-				transactionVolume = soundVolume or standardVolumeOutput
-			})
-		end
+            if tonumber(otherPlayerCoords) then
+                songCoords = NetworkGetPlayerCoords(otherPlayerCoords)
+            else 
+                songCoords = otherPlayerCoords
+            end
+	    distance = #(GetEntityCoords(GetPlayerPed(-1)) - songCoords)
+	    if distance < maxDistance then
+		SendNUIMessage({
+			transactionType = 'playSound',
+			transactionFile  = soundFile,
+			transactionVolume = soundVolume,
+		})
+	    end
+            volumeSend = soundVolume
+	    maxDist = maxDistance
 	end
+end)
+
+----------------------------
+-- This will make (approximate) change sound volume based on the distance the player is away from the position of the sound. EXPERIMENTAL --
+----------------------------
+
+Citizen.CreateThread(function()
+    Wait(7000)
+    while true do   
+	pos = GetEntityCoords(PlayerPedId())
+        if songCoords ~= nil and volumeSend ~= nil and maxDist ~= nil then
+            if distance < maxDist then
+                if Vdist(pos.x, pos.y, pos.z, songCoords) <= maxDist/10*1 then
+                    local DistVol = volumeSend
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*2 and Vdist(pos.x, pos.y, pos.z, songCoords) < maxDist/10*3 then
+                    local DistVol = volumeSend - 0.1
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*3 and Vdist(pos.x, pos.y, pos.z, songCoords) < maxDist/10*4 then
+                    local DistVol = volumeSend - 0.2
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*4 and Vdist(pos.x, pos.y, pos.z, songCoords) < maxDist/10*5 then
+                    local DistVol = volumeSend - 0.3
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*5 and Vdist(pos.x, pos.y, pos.z, songCoords) < maxDist/10*6 then
+                    local DistVol = volumeSend - 0.4
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*6 and Vdist(pos.x, pos.y, pos.z, songCoords) < maxDist/10*7 then
+                    local DistVol = volumeSend - 0.5
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*7 and Vdist(pos.x, pos.y, pos.z, songCoords) < maxDist/10*8 then
+                    local DistVol = volumeSend - 0.6
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })						
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*8 and Vdist(pos.x, pos.y, pos.z, songCoords) < maxDist/10*9 then						
+                    local DistVol = volumeSend - 0.68
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*9 and Vdist(pos.x, pos.y, pos.z, songCoords) < maxDist/10*9.5 then
+                    local DistVol = volumeSend - 0.75
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                elseif Vdist(pos.x, pos.y, pos.z, songCoords) >= maxDist/10*9.5 then
+                    local DistVol = volumeSend - 0.78
+                    SendNUIMessage({
+                        transactionType = "volume",
+                        volNUI = DistVol,			
+                    })
+                end
+            else 
+                SendNUIMessage({
+                    transactionType = 'stop',	
+                })
+            end
+        end
+	Citizen.Wait(3)
+    end
 end)
 
