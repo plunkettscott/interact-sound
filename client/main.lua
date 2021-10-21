@@ -182,5 +182,5 @@ Citizen.CreateThread(function()
         end
 	Citizen.Wait(3)
     end
-end
+end)
 
