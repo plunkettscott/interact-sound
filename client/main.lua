@@ -85,23 +85,21 @@ end)
 RegisterNetEvent('InteractSound_CL:PlayWithinDistance')
 AddEventHandler('InteractSound_CL:PlayWithinDistance', function(otherPlayerCoords, maxDistance, soundFile, soundVolume)
 	if hasPlayerLoaded then
-        if tonumber(otherPlayerCoords) then
-            songCoords = NetworkGetPlayerCoords(otherPlayerCoords)
-        else 
-            songCoords = otherPlayerCoords
-        end
-		distance = #(GetEntityCoords(GetPlayerPed(-1)) - songCoords)
-	
-		if distance < maxDistance then
-			SendNUIMessage({
-				transactionType = 'playSound',
-				transactionFile  = soundFile,
-				transactionVolume = soundVolume,
-			})
-		end
-        
-		volumeSend = soundVolume
-		maxDist = maxDistance
+            if tonumber(otherPlayerCoords) then
+                songCoords = NetworkGetPlayerCoords(otherPlayerCoords)
+            else 
+                songCoords = otherPlayerCoords
+            end
+	    distance = #(GetEntityCoords(GetPlayerPed(-1)) - songCoords)
+	    if distance < maxDistance then
+		SendNUIMessage({
+			transactionType = 'playSound',
+			transactionFile  = soundFile,
+			transactionVolume = soundVolume,
+		})
+	    end
+            volumeSend = soundVolume
+	    maxDist = maxDistance
 	end
 end)
 
@@ -111,8 +109,8 @@ end)
 
 Citizen.CreateThread(function()
     Wait(7000)
-	while true do   
-		pos = GetEntityCoords(PlayerPedId())
+    while true do   
+	pos = GetEntityCoords(PlayerPedId())
         if songCoords ~= nil and volumeSend ~= nil and maxDist ~= nil then
             if distance < maxDist then
                 if Vdist(pos.x, pos.y, pos.z, songCoords) <= maxDist/10*1 then
@@ -183,6 +181,6 @@ Citizen.CreateThread(function()
             end
         end
 	Citizen.Wait(3)
-	end
+    end
 end
 
