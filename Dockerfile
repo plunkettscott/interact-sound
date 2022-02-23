@@ -1,2 +1,1 @@
-FROM hyness/spring-cloud-config-server:jre17
-COPY ./config /config
+FROM hyness/spring-cloud-config-server:3.1.0
